@@ -1,0 +1,7 @@
+django
+djangorestframework
+python-dotenv
+django-constance
+pytest
+flake8
+black
