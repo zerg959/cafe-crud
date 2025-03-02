@@ -4,6 +4,7 @@ from typing import List, Dict, Any
 from django.db import models
 from django.core.exceptions import ValidationError
 
+
 class Order(models.Model):
     """
     Order model.
@@ -29,27 +30,28 @@ class Order(models.Model):
         default=[]
     )
     total_price: float = models.DecimalField(
-        decimal_places=2, 
-        verbose_name="total price"
+        decimal_places=2,
+        verbose_name="total price",
         )
     status_order: str = models.CharField(
         verbose_name="order status",
         choices=STATUSES_ORDERS,
         default="Cooking"
     )
+
     def count_total_price(self) -> None:
         """
         Count total price of the order.
         """
         if not self.items:
             raise ValidationError('No dishes in order!')
-        
-        self.total_price =  sum(item["price"] for item in self.items)
+
+        self.total_price = sum(item["price"] for item in self.items)
         self.save()
 
     def save(self, *args, **kwargs) -> None:
         super().save(*args, **kwargs)
         self.count_total_price()
-    
+
     def __str__(self) -> str:
         return f'Order {self.id}, Table: {self.table_number}'

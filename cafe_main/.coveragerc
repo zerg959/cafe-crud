@@ -1,0 +1,19 @@
+# .coveragerc
+[run]
+branch = True
+source = .
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    def __str__
+    if __name__ == .__main__.:
+omit =
+    */migrations/*
+    */venv/*
+    tests/*
+    cafe_main/*
+    conftest.py
+    manage.py
+    */__init__.py
