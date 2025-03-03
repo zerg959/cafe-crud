@@ -1,5 +1,3 @@
-# https://ru.hexlet.io/courses/python-django-orm/lessons/annotation/theory_unit 
-
 from typing import List, Dict, Any, Tuple
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -11,7 +9,7 @@ class Order(models.Model):
     - table_number: table number;
     - items: ordered dishes;
     - total_price: total price of all ordered dishes;
-    - status_order: possible stauses of order;
+    - status_order: possible statuses of order;
     Methods:
     - count_total_price: calculate total price of all dishes in order;
     - save: record new data in object attr.
@@ -41,19 +39,6 @@ class Order(models.Model):
         default="cooking"
     )
 
-    def change_status(self, new_status):
-        # statuses = STATUSES_ORDERS
-        if new_status != self.status_order:
-            if new_status not in dict(self.STATUSES_ORDERS).keys():
-                raise ValidationError('Unknown status')
-            self.status_order = new_status
-            self.save()
-            return True
-        return False
-        
-        
-
-
     def count_total_price(self) -> None:
         """
         Count total price of the order.
@@ -67,21 +52,8 @@ class Order(models.Model):
         """
         Save Order-object in DB.
         """
+        self.count_total_price()
         super().save(*args, **kwargs)
-
-    @classmethod
-    def create_order(cls, table_number, dishes):
-        """
-        Create Order object in DB.
-        """
-        new_order = cls(
-            table_number=table_number,
-            dishes=dishes,
-            )
-        new_order.count_total_price()
-        new_order.save()
-        return new_order
-
 
     def __str__(self) -> str:
         return f'Order {self.id}, Table: {self.table_number}, Total price: {self.total_price}'
