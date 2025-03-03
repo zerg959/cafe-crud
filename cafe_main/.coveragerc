@@ -17,3 +17,5 @@ omit =
     conftest.py
     manage.py
     */__init__.py
+
+show_missing=True

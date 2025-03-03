@@ -1,6 +1,8 @@
 from typing import List, Dict, Any, Tuple
 from django.db import models
 from django.core.exceptions import ValidationError
+import json
+
 
 class Order(models.Model):
     """
@@ -24,7 +26,7 @@ class Order(models.Model):
         )
     dishes: List[dict] = models.JSONField(
         verbose_name="list of dishes",
-        default=[]
+        default=list
     )
     total_price: float = models.DecimalField(
         decimal_places=2,
@@ -43,17 +45,40 @@ class Order(models.Model):
         """
         Count total price of the order.
         """
-        if not self.dishes:
-            raise ValidationError('No dishes in order!')
+        if not self.dishes or not isinstance(self.dishes, list):
+            self.total_price = 0  # set total price to zero.
+            return
 
-        self.total_price = sum(dish["price"] for dish in self.dishes)
+        self.total_price = sum(
+            dish.get("price", 0)
+            for dish in self.dishes if isinstance(dish, dict)
+            )
 
     def save(self, *args, **kwargs) -> None:
         """
         Save Order-object in DB.
         """
+        if isinstance(self.dishes, str):  # Check if dishes is String
+            try:
+                self.dishes = json.loads(self.dishes)
+            except json.JSONDecodeError:
+                raise ValidationError(
+                    "Invalid JSON format for 'dishes' field."
+                    )
+        if isinstance(self.total_price, str):
+            try:
+                self.total_price = Decimal(self.total_price)
+            except ValueError:
+                raise ValidationError("Invalid format for 'total_price'.\
+                                      Must be a number.")
+
+        if not isinstance(self.dishes, list):
+            raise ValidationError(
+                "The 'dishes' field must be a list of dictionaries."
+                )
         self.count_total_price()
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return f'Order {self.id}, Table: {self.table_number}, Total price: {self.total_price}'
+        return f'Order {self.id}, Table: {self.table_number},\
+          Total price: {self.total_price}'
