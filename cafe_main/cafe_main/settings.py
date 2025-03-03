@@ -59,6 +59,31 @@ MIDDLEWARE = [
 ROOT_URLCONF = "cafe_main.urls"
 
 TEMPLATES = [
+      {
+        # Jinja settings.
+        'BACKEND': 'django_jinja.backend.Jinja2',
+        'DIRS': [ # Path to Jinja templates.
+            'templates',
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'extensions': [
+                'jinja2.ext.do',
+                'jinja2.ext.loopcontrols',
+                'jinja2.ext.with_',
+                'jinja2.ext.i18n',
+                'django_jinja.builtins.filters',
+                'django_jinja.builtins.tags',
+                'django.templatetags.static.StaticFilesExtension', # Для статических файлов
+            ],
+        }
+    },
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [],
