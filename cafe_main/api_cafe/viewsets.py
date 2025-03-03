@@ -18,6 +18,9 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def get_order_by_table(self, request):
+        """
+        Filter all orders by table number.
+        """
         table_number = request.query_params.get('table_number')
         if table_number is None or int(table_number) <= 0:
             return Response(
