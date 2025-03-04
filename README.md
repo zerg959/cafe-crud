@@ -4,6 +4,7 @@
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 ## Test order managment system with API.
+- Run on <a href="http://cafe.hub10.ru:8000/">cafe.hub10.ru:8000/
 - API root endpoint: <a href="http://cafe.hub10.ru/api/orders/">cafe.hub10.ru/api/orders/</a>
 - api/admin/
 - api/orders/
