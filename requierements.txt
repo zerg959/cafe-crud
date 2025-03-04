@@ -2,6 +2,7 @@ django
 djangorestframework
 python-dotenv
 django-constance
+django-filter
 pytest
 pytest-django
 pytest-cov
