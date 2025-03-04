@@ -3,15 +3,17 @@
 {% block title %}Order Details{% endblock %}
 
 {% block content %}
-    <h1>Order Details</h1>
-    <p>Table Number: {{ order.table_number }}</p>
-    <p>Status: {{ order.status_order }}</p>
-    <p>Total Price: {{ order.total_price }}</p>
+<div class="jumbotron text-center">
+    <h1 class="display-3">Order Details</h1>
+</div>
+    <p class="display-5">Table Number: {{ order.table_number }}</p>
+    <p class="lead">Status: {{ order.status_order }}</p>
+    <p class="lead">Total Price: {{ order.total_price }}</p>
 
-    <h2>Dishes</h2>
+    <h2 class="lead">Dishes:</h2>
     <ul>
         {% for dish in order.dishes %}
-            <li>{{ dish.dish_name }} - {{ dish.price }}</li>
+            <li class="lead">{{ dish.dish_name }} - {{ dish.price }}</li>
         {% endfor %}
     </ul>
     <a href="{% url 'index' %}" class="btn btn-secondary">Main</a>

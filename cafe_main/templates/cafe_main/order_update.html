@@ -4,8 +4,6 @@
 
 {% block content %}
     <h1>Edit Order</h1>
-    <a href="{% url 'order_detail' pk=order.id %}" class="btn btn-secondary mb-3">Back to Order Details</a>
-
     <form method="post">
         {% if form.errors %}
             <div class="alert alert-danger">
