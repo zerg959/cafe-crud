@@ -1,6 +1,7 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from django.db.models import Sum
 from django.db.models.functions import Cast
 from django.db.models import FloatField
@@ -52,3 +53,19 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         # Return result.
         return Response({"total_revenue": total_revenue})
+
+    @action(detail=False, methods=["get"], url_path="order_status")
+    def get_orders_by_status(self, request):
+        """
+        Filter orders by status: 'cooking', 'paid', 'ready'.
+        """
+        # Filter orders with selected status.
+        status_order = request.query_params.get("status_order")
+        if not status_order:
+            return Response({"error": "status_order parameter is required"},
+                        status=status.HTTP_400_BAD_REQUEST)
+        if status_order not in dict(Order.STATUSES_ORDERS).keys():
+            raise ValidationError({"error": "Invalid status_order value (not 'cooking', 'paid', 'ready')"})
+        queryset = Order.objects.filter(status_order=status_order)
+        serializer = OrderSerializer(queryset, many=True)
+        return Response(serializer.data)
