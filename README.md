@@ -49,6 +49,6 @@ The system automatically adds an order with a unique ID, calculated cost, and a 
 
 #### Screenshots.
 
-
+![Скриншот](https://raw.githubusercontent.com/zerg959/foodgram-project-react/master/docs/screen2.PNG)
 
 
