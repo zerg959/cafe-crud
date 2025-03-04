@@ -5,6 +5,13 @@
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 ## Test order managment system with API.
 - API root endpoint: <a href="http://cafe.hub10.ru/api/orders/">cafe.hub10.ru/api/orders/</a>
+- api/admin/
+- api/orders/
+- api/orders/id/
+- api/orders/create/
+- api/orders/<int:pk>/update/
+- api/orders/<int:pk>/delete/
+- api/revenue/
 ### Functional description.
 - Create, Read, Update and Delete orders: via API-endpoints or web-interface.
 - Order is the list of JSON-object. Must be entered in JSON-format.
