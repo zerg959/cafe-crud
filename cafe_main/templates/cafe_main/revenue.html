@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Total Revenue{% endblock %}
+
+{% block content %}
+    <h1>Total Revenue</h1>
+    <p>Total revenue from paid orders: {{ total_revenue }}</p>
+    <a href="{% url 'index' %}" class="btn btn-secondary">Back to Orders</a>
+{% endblock %}

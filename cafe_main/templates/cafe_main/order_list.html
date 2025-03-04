@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+    <h1>Orders</h1>
+
+    <form method="get" class="mb-4">
+        <div class="form-row">
+            <div class="col">
+                <input type="number" class="form-control" name="table_number" placeholder="Table Number">
+            </div>
+            <div class="col">
+                <select class="form-control" name="status_order">
+                    <option value="">All Statuses</option>
+                    {% for status_code, status_name in STATUSES_ORDERS %}
+                        <option value="{{ status_code }}" {% if request.GET.status_order == status_code %}selected{% endif %}>{{ status_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-secondary">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <a href="{% url 'order_create' %}" class="btn btn-primary mb-3">Create New Order</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Table Number</th>
+                <th>Status</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.table_number }}</td>
+                    <td>{{ order.status_order }}</td>
+                    <td>{{ order.total_price }}</td>
+                    <td>
+                        <a href="{% url 'order_detail' pk=order.id %}" class="btn btn-sm btn-info">View</a>
+                        <a href="{% url 'order_update' pk=order.id %}" class="btn btn-sm btn-primary">Edit</a>
+                        <form method="post" action="{% url 'order_delete' pk=order.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'revenue' %}" class="btn btn-info">View Total Revenue</a>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Details{% endblock %}
+
+{% block content %}
+    <h1>Order Details</h1>
+    <p>Table Number: {{ order.table_number }}</p>
+    <p>Status: {{ order.status_order }}</p>
+    <p>Total Price: {{ order.total_price }}</p>
+
+    <h2>Dishes</h2>
+    <ul>
+        {% for dish in order.dishes %}
+            <li>{{ dish.dish_name }} - {{ dish.price }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'order_update' pk=order.id %}" class="btn btn-primary">Edit</a>
+    <form method="post" action="{% url 'order_delete' pk=order.id %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+    <a href="{% url 'index' %}" class="btn btn-secondary">Back to List</a>
+{% endblock %}
