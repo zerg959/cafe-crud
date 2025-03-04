@@ -3,7 +3,8 @@
 {% block title %}Total Revenue{% endblock %}
 
 {% block content %}
-    <h1>Total Revenue</h1>
-    <p>Total revenue from paid orders: {{ total_revenue }}</p>
-    <a href="{% url 'index' %}" class="btn btn-secondary">Back to Orders</a>
+<div class="jumbotron text-center">
+    <h1 class="display-2">Total Revenue</h1>
+    <p class="lead">Total revenue from paid orders: {{ total_revenue }}</p>
+</div>
 {% endblock %}

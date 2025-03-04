@@ -3,8 +3,9 @@
 {% block title %}Orders{% endblock %}
 
 {% block content %}
-    <h1>Orders</h1>
-
+<div class="jumbotron text-center">
+    <h1 class="display-4">Orders</h1>
+</div>
     <form method="get" class="mb-4">
         <div class="form-row">
             <div class="col">
@@ -19,28 +20,39 @@
                 </select>
             </div>
             <div class="col">
-                <button type="submit" class="btn btn-secondary">Filter</button>
+                <button type="submit" class="btn btn-info">Filter</button>
             </div>
         </div>
     </form>
 
-    <a href="{% url 'order_create' %}" class="btn btn-primary mb-3">Create New Order</a>
-
     <table class="table">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Table Number</th>
-                <th>Status</th>
+                <th>Dishes</th>
                 <th>Total Price</th>
-                <th>Actions</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             {% for order in orders %}
                 <tr>
+                    <td>{{ order.id }}</td>
                     <td>{{ order.table_number }}</td>
-                    <td>{{ order.status_order }}</td>
+                    <td>
+                        {% if order.dishes %}
+                            <ul>
+                            {% for dish in order.dishes %}
+                                <li>{{ dish.dish_name }} - {{ dish.price }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            No dishes
+                        {% endif %}
+                    </td>
                     <td>{{ order.total_price }}</td>
+                    <td>{{ order.status_order }}</td>
                     <td>
                         <a href="{% url 'order_detail' pk=order.id %}" class="btn btn-sm btn-info">View</a>
                         <a href="{% url 'order_update' pk=order.id %}" class="btn btn-sm btn-primary">Edit</a>
@@ -53,6 +65,4 @@
             {% endfor %}
         </tbody>
     </table>
-
-    <a href="{% url 'revenue' %}" class="btn btn-info">View Total Revenue</a>
 {% endblock %}
