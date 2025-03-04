@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     "rest_framework",
+    "django_filters",
     "orders.apps.OrdersConfig",
     "api_cafe.apps.ApiCafeConfig",
     "django.contrib.admin",
@@ -59,34 +60,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = "cafe_main.urls"
 
 TEMPLATES = [
-    #   {
-    #     # Jinja settings.
-    #     'BACKEND': 'django_jinja.backend.Jinja2',
-    #     'DIRS': [ # Path to Jinja templates.
-    #         'templates',
-    #     ],
-    #     'APP_DIRS': True,
-    #     'OPTIONS': {
-    #         'context_processors': [
-    #             'django.template.context_processors.debug',
-    #             'django.template.context_processors.request',
-    #             'django.contrib.auth.context_processors.auth',
-    #             'django.contrib.messages.context_processors.messages',
-    #         ],
-    #         'extensions': [
-    #             'jinja2.ext.do',
-    #             'jinja2.ext.loopcontrols',
-    #             'jinja2.ext.with_',
-    #             'jinja2.ext.i18n',
-    #             'django_jinja.builtins.filters',
-    #             'django_jinja.builtins.tags',
-    #             'django.templatetags.static.StaticFilesExtension', # Для статических файлов
-    #         ],
-    #     }
-    # },
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, 'templates')], # <--- path to templates on project level
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -148,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
