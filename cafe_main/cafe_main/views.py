@@ -59,48 +59,47 @@ def order_detail(request, pk):
                       'cafe_main/error.html',
                       {'error_message': f"Could not retrieve order details (Error: {e})"}
                       )
-
 def order_create(request):
     """
-    Handle order creation.
+    Представление для создания заказа.
     """
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             headers = {'Content-type': 'application/json'}
-            cleaned_data = form.cleaned_data
-            cleaned_data['dishes'] = json.dumps(cleaned_data['dishes'])
+            # Сериализуем данные формы в JSON
+            data = form.cleaned_data
+            data['table_number'] = int(data['table_number'])
+
+            # If status_order is not in the form data (i.e., not selected), use the default value
+            if 'status_order' not in data or not data['status_order']:
+                data['status_order'] = 'cooking'  # Use the default value
+
+            json_data = json.dumps(data)
             response = requests.post(
                 API_URL,
-                json=form.cleaned_data,
+                data=json_data,
                 headers=headers
-                )
+            )
+
             if response.status_code == 201:
+                # Успешно создано
                 order = response.json()
                 return redirect('order_detail', pk=order['id'])
             else:
-                form.add_error(
-                    None,
-                    f"Failed to create order. \
-                        API returned status code: {response.status_code}"
-                        )
-                return render(
-                    request,
-                    'cafe_main/order_create.html',
-                    {'form': form}
-                    )
+                # Обрабатываем ошибки, если API возвращает что-то отличное от 201
+                form.add_error(None, f"Ошибка при создании заказа: {response.status_code} - {response.text}")
+                return render(request, 'cafe_main/order_create.html', {'form': form})  # возвращаем форму с ошибками
+
+        else:
+            # Если форма невалидна, возвращаем форму с ошибками
+            return render(request, 'cafe_main/order_create.html', {'form': form})
     else:
+        # Если это GET-запрос, отображаем пустую форму
         form = OrderForm()
-        return render(
-            request,
-            'cafe_main/order_create.html',
-            {'form': form}
-            )
+        return render(request, 'cafe_main/order_create.html', {'form': form})
 
 def order_update(request, pk):
-    """
-    Handle order update.
-    """
     api_url = f'{API_URL}{pk}/'
     try:
         response = requests.get(api_url)
@@ -110,47 +109,56 @@ def order_update(request, pk):
             form = OrderForm(request.POST, initial=order)
             if form.is_valid():
                 headers = {'Content-type': 'application/json'}
+                data = form.cleaned_data
+                data['table_number'] = int(data['table_number'])
+
+                 # If status_order is not in the form data (i.e., not selected), use the default value
+                if 'status_order' not in data or not data['status_order']:
+                    data['status_order'] = 'cooking'  # Use the default value
+                json_data = json.dumps(data)
                 response = requests.put(
                     api_url,
-                    json=form.cleaned_data,
+                    data=json_data,
                     headers=headers
-                    )
+                )
+
                 if response.status_code == 200:
                     return redirect('order_detail', pk=pk)
                 else:
                     form.add_error(
                         None,
-                        f"Failed to update order.\
-                              API returned status code: {response.status_code}"
-                              )
+                        f"Failed to update order. API returned status code: {response.status_code} - {response.text}"
+                    )
                     order['dishes'] = json.dumps(order['dishes'])
                     return render(
                         request,
                         'cafe_main/order_update.html',
                         {'form': form, 'order': order}
-                        )
+                    )
             else:
                 order['dishes'] = json.dumps(order['dishes'])
                 return render(
                     request,
                     'cafe_main/order_update.html',
                     {'form': form, 'order': order, 'form': form}
-                    )
+                )
         else:
-            order['dishes'] = json.dumps(order['dishes'])
+            # Ensure dishes is JSON string before passing to the form
+            if isinstance(order['dishes'], list):
+                order['dishes'] = json.dumps(order['dishes'])
             form = OrderForm(initial=order)
             return render(
                 request,
                 'cafe_main/order_update.html',
                 {'form': form, 'order': order, 'form': form}
-                )
+            )
     except requests.exceptions.RequestException as e:
         print(f"Error update order: {e}")
         return render(
             request,
             'cafe_main/error.html',
             {'error_message': f"Could not retrieve order for update (Error: {e})"}
-            )
+        )
 
 def order_delete(request, pk):
     """

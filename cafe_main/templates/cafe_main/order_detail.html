@@ -14,11 +14,13 @@
             <li>{{ dish.dish_name }} - {{ dish.price }}</li>
         {% endfor %}
     </ul>
-
+    <a href="{% url 'index' %}" class="btn btn-secondary">Main</a>
+    <a href="{% url 'order_list' %}" class="btn btn-secondary">Back to List</a>
     <a href="{% url 'order_update' pk=order.id %}" class="btn btn-primary">Edit</a>
     <form method="post" action="{% url 'order_delete' pk=order.id %}" style="display: inline;">
-        {% csrf_token %}
+        <!-- {% csrf_token %} -->
         <button type="submit" class="btn btn-danger">Delete</button>
     </form>
-    <a href="{% url 'index' %}" class="btn btn-secondary">Back to List</a>
+
+
 {% endblock %}
