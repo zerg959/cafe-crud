@@ -50,6 +50,6 @@ The system automatically adds an order with a unique ID, calculated cost, and a 
 #### Screenshots.
 
 ![Скриншот](https://raw.githubusercontent.com/zerg959/foodgram-project-react/master/docs/screen2.PNG)
-![Скриншот](https://raw.githubusercontent.com/zerg959cafe-crud/main/screenshots/cafe1.PNG)
+![Скриншот](https://raw.githubusercontent.com/zerg959/cafe-crud/main/screenshots/cafe1.PNG)
 
 
