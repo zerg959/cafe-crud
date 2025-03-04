@@ -25,8 +25,8 @@ The system automatically adds an order with a unique ID, calculated cost, and a 
 #### Order List:
 - Order list show all orders: their ID, table number, list of dishes, total cost, and status.
 #### Order Status Modification:
-- Defaul status: "Cooking"
-- Every user can change order status (“pending”, “ready”, “paid”).
+- Default status: "cooking"
+- Every user can change order status (“cooking”, “ready”, “paid”).
 #### Shift Revenue Calculation:
 - Separate page for calculating the total revenue of orders with the “paid”-status.
 <hr>
