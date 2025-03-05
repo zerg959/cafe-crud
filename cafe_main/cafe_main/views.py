@@ -61,13 +61,13 @@ def order_detail(request, pk):
                       )
 def order_create(request):
     """
-    Представление для создания заказа.
+    Create order view.
     """
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
             headers = {'Content-type': 'application/json'}
-            # Сериализуем данные формы в JSON
+            # Serialize form data to JSON
             data = form.cleaned_data
             data['table_number'] = int(data['table_number'])
 
@@ -83,19 +83,19 @@ def order_create(request):
             )
 
             if response.status_code == 201:
-                # Успешно создано
+                # If created:
                 order = response.json()
                 return redirect('order_detail', pk=order['id'])
             else:
-                # Обрабатываем ошибки, если API возвращает что-то отличное от 201
-                form.add_error(None, f"Ошибка при создании заказа: {response.status_code} - {response.text}")
-                return render(request, 'cafe_main/order_create.html', {'form': form})  # возвращаем форму с ошибками
+                # If not 201:
+                form.add_error(None, f"Order create error: {response.status_code} - {response.text}")
+                return render(request, 'cafe_main/order_create.html', {'form': form})  # Return form with errors
 
         else:
-            # Если форма невалидна, возвращаем форму с ошибками
+            # If form is invalid return form with errors.
             return render(request, 'cafe_main/order_create.html', {'form': form})
     else:
-        # Если это GET-запрос, отображаем пустую форму
+        # If GET-request - show empty form.
         form = OrderForm()
         return render(request, 'cafe_main/order_create.html', {'form': form})
 
@@ -193,7 +193,7 @@ def revenue(request):
     """
     View for web-page with paid orders total revenue.
     """
-    api_url = f'{API_URL}revenue/'  # URL вашего API
+    api_url = f'{API_URL}revenue/'  # API URL
     try:
         response = requests.get(api_url)
         revenue_data = response.json()  # Get the JSON

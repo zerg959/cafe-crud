@@ -13,7 +13,6 @@ omit =
     */migrations/*
     */venv/*
     tests/*
-    cafe_main/*
     conftest.py
     manage.py
     */__init__.py
