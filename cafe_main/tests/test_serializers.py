@@ -26,8 +26,9 @@ def test_serialized_order_created(order_data):
     assert instance.table_number == order_data["table_number"]
     assert instance.dishes == order_data["dishes"]
     assert len(instance.dishes) == len(order_data["dishes"])
-    assert instance.status_order == 'cooking'
-    assert instance.total_price == sum(dish['price'] for dish in instance.dishes)
+    assert instance.status_order == "cooking"
+    assert instance.total_price == sum(dish["price"] for dish in instance.dishes)
+
 
 @pytest.mark.django_db
 def test_serializer_raise_error(invalid_order_data):

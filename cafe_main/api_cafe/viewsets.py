@@ -15,6 +15,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     """
     Order viewset for CRUD-operations.
     """
+
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]

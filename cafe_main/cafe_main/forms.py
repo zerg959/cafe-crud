@@ -2,23 +2,23 @@ import json
 from django import forms
 from orders.models import Order
 
+
 class OrderForm(forms.Form):
     """
     Form for the Create and Update operations with objects of Order class.
     """
+
     table_number = forms.IntegerField(label="Table Number")
     dishes = forms.CharField(label="Dishes (JSON)", widget=forms.Textarea)
     status_order = forms.ChoiceField(
-        label="Status Order",
-        choices=Order.STATUSES_ORDERS,
-        required=False
+        label="Status Order", choices=Order.STATUSES_ORDERS, required=False
     )
 
     def clean_table_number(self):
         """
         Check if table number is positive integer.
         """
-        table_number = self.cleaned_data['table_number']
+        table_number = self.cleaned_data["table_number"]
         if table_number <= 0:
             raise forms.ValidationError("Table number must be positive.")
         return table_number
@@ -27,7 +27,7 @@ class OrderForm(forms.Form):
         """
         Validation of the entered data: check types of data and a structure.
         """
-        dishes_string = self.cleaned_data['dishes'] # it's string
+        dishes_string = self.cleaned_data["dishes"]  # it's string
         try:
             dishes_list = json.loads(dishes_string)  # Try to parse string to JSON-list
 
@@ -36,17 +36,23 @@ class OrderForm(forms.Form):
 
             for item in dishes_list:
                 if not isinstance(item, dict):
-                    raise forms.ValidationError("Each item in dishes must be a dictionary.")
+                    raise forms.ValidationError(
+                        "Each item in dishes must be a dictionary."
+                    )
 
                 if not all(key in item for key in ["dish_name", "price"]):
-                    raise forms.ValidationError("Each dish must have 'dish_name' and 'price' keys.")
+                    raise forms.ValidationError(
+                        "Each dish must have 'dish_name' and 'price' keys."
+                    )
 
                 try:
-                    float(item['price'])  # check if the price can be convert to float
+                    float(item["price"])  # check if the price can be convert to float
                 except ValueError:
                     raise forms.ValidationError("Dish price must be a number.")
 
-            return json.dumps(dishes_list) # returns JSON to the dishes, not python-list
+            return json.dumps(
+                dishes_list
+            )  # returns JSON to the dishes, not python-list
 
         except json.JSONDecodeError as e:
             raise forms.ValidationError(f"Invalid JSON format: {e}")

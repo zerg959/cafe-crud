@@ -58,7 +58,7 @@ class Order(models.Model):
             try:
                 self.dishes = json.loads(self.dishes)
             except json.JSONDecodeError:
-                raise ValidationError("Invalid JSON format for \'dishes\' field.")
+                raise ValidationError("Invalid JSON format for 'dishes' field.")
         if isinstance(self.total_price, str):
             try:
                 self.total_price = Decimal(self.total_price)
