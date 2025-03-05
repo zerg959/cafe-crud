@@ -23,17 +23,6 @@ def dishes_for_test():
     dishes_for_test = [{'name': 'Pizza', 'price': 12.50}, {'name': 'Pasta', 'price': 10.00}]
     return dishes_for_test
 
-@pytest.fixture
-def order_for_test():
-    """
-    Order fixture.
-    """
-    dishes = [{'name': 'Pizza', 'price': 12.50}, {'name': 'Pasta', 'price': 10.00}]
-    order = Order.create_order(
-        table_number=2,
-        dishes=dishes)
-    return order
-
 
 @pytest.fixture
 def order_data():
