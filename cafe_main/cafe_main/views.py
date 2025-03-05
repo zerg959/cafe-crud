@@ -1,4 +1,4 @@
-# my_app/views.py
+# cafe_main/views.py
 import requests
 import json
 from django.shortcuts import render, redirect, get_object_or_404
