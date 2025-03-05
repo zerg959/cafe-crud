@@ -23,6 +23,14 @@ def dishes_for_test():
     dishes_for_test = [{'name': 'Pizza', 'price': 12.50}, {'name': 'Pasta', 'price': 10.00}]
     return dishes_for_test
 
+@pytest.fixture
+def order_for_test():
+    """
+    Order fixture.
+    """
+    dishes = [{'name': 'Pizza', 'price': 12.50}, {'name': 'Pasta', 'price': 10.00}]
+    order = Order(table_number=2, dishes=dishes)  # Создаем объект, но НЕ сохраняем
+    return order
 
 @pytest.fixture
 def order_data():
@@ -40,4 +48,22 @@ def order_data():
               ],
         "total_price": 150.00,
         "status_order": "cooking",
+    }
+
+@pytest.fixture
+def invalid_order_data():
+    return {
+        "table_number": 2,
+        "dishes": (
+            {
+                "dish_name": "Beefsteak",
+                "price": 100.00,
+             },
+            {
+                "dish_name": "Side Salad",
+                "price": 50.00,
+            },
+        ),
+        "total_price": 150.00,
+        "status_order": 2,
     }

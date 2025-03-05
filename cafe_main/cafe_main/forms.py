@@ -3,6 +3,9 @@ from django import forms
 from orders.models import Order
 
 class OrderForm(forms.Form):
+    """
+    Form for the Create and Update operations with objects of Order class.
+    """
     table_number = forms.IntegerField(label="Table Number")
     dishes = forms.CharField(label="Dishes (JSON)", widget=forms.Textarea)
     status_order = forms.ChoiceField(
@@ -12,12 +15,18 @@ class OrderForm(forms.Form):
     )
 
     def clean_table_number(self):
+        """
+        Check if table number is positive integer.
+        """
         table_number = self.cleaned_data['table_number']
         if table_number <= 0:
             raise forms.ValidationError("Table number must be positive.")
         return table_number
 
     def clean_dishes(self):
+        """
+        Validation of the entered data: check types of data and a structure.
+        """
         dishes_string = self.cleaned_data['dishes'] # it's string
         try:
             dishes_list = json.loads(dishes_string)  # Try to parse string to JSON-list

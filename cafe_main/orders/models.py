@@ -1,4 +1,5 @@
 from typing import List, Dict, Any, Tuple
+from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
 import json
@@ -57,7 +58,7 @@ class Order(models.Model):
             try:
                 self.dishes = json.loads(self.dishes)
             except json.JSONDecodeError:
-                raise ValidationError("Invalid JSON format for 'dishes' field.")
+                raise ValidationError("Invalid JSON format for \'dishes\' field.")
         if isinstance(self.total_price, str):
             try:
                 self.total_price = Decimal(self.total_price)
